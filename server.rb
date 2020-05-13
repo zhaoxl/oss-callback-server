@@ -46,8 +46,9 @@ post '/*' do
   authorization = Base64.decode64(get_header('authorization'))
   req_body = request.body.read
 
+  pos = request.path.include?("?") ? "?" : ""
   auth_str = CGI.unescape(request.path) +
-             '?' + request.query_string + "\n" +
+             pos + request.query_string + "\n" +
              req_body
 
   valid = rsa.public_key.verify(
